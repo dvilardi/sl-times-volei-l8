@@ -203,6 +203,7 @@ def generate_teams(present_players, setters, team_sizes):
     mvps = [p for p in present_players if present_players[p]['mvp'] == True and p not in setters]
     random.shuffle(mvps)
     t_list = list(range(n_teams))
+    random.shuffle(t_list)
     t_index = 0
     
     for mvp in mvps:
@@ -222,6 +223,7 @@ def generate_teams(present_players, setters, team_sizes):
     females = [p for p in present_players if present_players[p]['gender'] == 'F' and p not in setters]
     random.shuffle(females)
     t_list = list(range(n_teams))
+    random.shuffle(t_list)
     t_index = 0
     
     for female in females:
