@@ -2,9 +2,9 @@
 # Packages
 
 import streamlit as st
-import pandas as pd
+# import pandas as pd
 import math
-import plotly.graph_objects as go
+# import plotly.graph_objects as go
 import random
 
 all_known_players = {'Ricardo B' : {'gender' : 'M', 'score' : 10, 'mvp' : True},
