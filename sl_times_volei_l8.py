@@ -19,7 +19,7 @@ if 'df_players' not in st.session_state:
     st.session_state['df_players'] = df_players
 
 # Allow user to edit/add rows
-df_edited = st.data_editor(st.session_state['players_df'],
+df_edited = st.data_editor(st.session_state['df_players'],
                            num_rows='dynamic',
                            key='editable_table')
 
