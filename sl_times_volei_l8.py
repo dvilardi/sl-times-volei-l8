@@ -328,7 +328,6 @@ hide_player_scores = st.checkbox('Esconder Scores', key = 'hide_scores', value =
 
 # Check that best_generation is not on session_state, initialize if not
 if 'best_generation' not in st.session_state:
-    best_generation = {}
     st.session_state['best_generation'] = {}
 
 # If button is pressed, run the generation function
@@ -347,7 +346,10 @@ if button_generate == True:
     # Save the best generation to session state
     st.session_state['best_generation'] = best_generation
 
-# If the best_generation is found, display the teams
+# Fetch the best generation from session state
+best_generation = st.session_state['best_generation']
+
+# If the best_generation is not empty, display the teams
 if best_generation:
     # Display result
     letters = ['A','B','C','D','E','F'] # max 6
