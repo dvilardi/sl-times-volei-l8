@@ -14,7 +14,6 @@ import random
 st.set_page_config(layout = "wide")
 st.title('Times L8 🏐')
 st.set_page_config(page_title='Times L8 🏐')
-st.markdown('---')
 
 # =======================================================================================================================================
 # Load raw CSV only once per session
@@ -293,9 +292,6 @@ def generate_teams(present_players, setters, team_sizes):
 
 # =======================================================================================================================================
 # Rodar a função gerar times 100x e pegar a de menor desvio padrão
-
-st.markdown('---')
-st.markdown('#### Gerar Times')
 
 # Button to generate teams and checkbox to hide scores
 button_generate = st.button('Gerar Times', key = 'button_generate')
