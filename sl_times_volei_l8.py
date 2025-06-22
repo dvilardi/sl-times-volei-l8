@@ -2,47 +2,27 @@
 # Packages
 
 import streamlit as st
-# import pandas as pd
+import pandas as pd
 import math
 # import plotly.graph_objects as go
 import random
 
-all_known_players = {'Ricardo B' : {'gender' : 'M', 'score' : 10, 'mvp' : True},
-                    'Fabio' : {'gender' : 'M', 'score' : 10, 'mvp' : True},
-                    'Tonico' : {'gender' : 'M', 'score' : 10, 'mvp' : True},
-                    'Christian' : {'gender' : 'M', 'score' : 10, 'mvp' : True},
-                    'Brilhante' : {'gender' : 'M', 'score' : 9, 'mvp' : True},
-                    'Marcao' : {'gender' : 'M', 'score' : 9, 'mvp' : True},
-                    'Ricardo P' : {'gender' : 'M', 'score' : 8.5, 'mvp' : False},
-                    'Felipe L' : {'gender' : 'M', 'score' : 8.5, 'mvp' : False},
-                    'Adriano' : {'gender' : 'M', 'score' : 8.5, 'mvp' : False},
-                    'Pedro' : {'gender' : 'M', 'score' : 8.5, 'mvp' : False},
-                    'Leo' : {'gender' : 'M', 'score' : 8.5, 'mvp' : False},
-                    'Vitor' : {'gender' : 'M', 'score' : 8.5, 'mvp' : False},
-                    'Carol' : {'gender' : 'F', 'score' : 8, 'mvp' : False},
-                    'Marcelo' : {'gender' : 'M', 'score' : 7.5, 'mvp' : False},
-                    'Hideki' : {'gender' : 'M', 'score' : 7.5, 'mvp' : False},
-                    'Marreta' : {'gender' : 'M', 'score' : 7, 'mvp' : False},
-                    'Taynara' : {'gender' : 'F', 'score' : 7, 'mvp' : False},
-                    'Otacilio' : {'gender' : 'M', 'score' : 7, 'mvp' : False},
-                    'Samira' : {'gender' : 'F', 'score' : 7, 'mvp' : False},
-                    'Gabriel' : {'gender' : 'M', 'score' : 7, 'mvp' : False},
-                    'Rhenan' : {'gender' : 'M', 'score' : 7, 'mvp' : False},
-                    'Jorge' : {'gender' : 'M', 'score' : 6.5, 'mvp' : False},
-                    'Danilo' : {'gender' : 'M', 'score' : 6.5, 'mvp' : False},
-                    'Edson' : {'gender' : 'M', 'score' : 6.5, 'mvp' : False},
-                    'Will' : {'gender' : 'M', 'score' : 6.5, 'mvp' : False},
-                    'Marquinhos' : {'gender' : 'M', 'score' : 6.5, 'mvp' : False},
-                    'Valdney' : {'gender' : 'M', 'score' : 6, 'mvp' : False},
-                    'Matheus' : {'gender' : 'M', 'score' : 6, 'mvp' : False},
-                    'Silvana' : {'gender' : 'F', 'score' : 6, 'mvp' : False},
-                    'Mel' : {'gender' : 'F', 'score' : 5, 'mvp' : False},
-                    'Chico' : {'gender' : 'M', 'score' : 5, 'mvp' : False},
-                    'Mary' : {'gender' : 'F', 'score' : 5, 'mvp' : False},
-                    'Rodrigo' : {'gender' : 'M', 'score' : 5, 'mvp' : False},
-                    'Jessica' : {'gender' : 'F', 'score' : 5, 'mvp' : False},
-                    'Dri' : {'gender' : 'F', 'score' : 4, 'mvp' : False},
-                    'Cris N' : {'gender' : 'F', 'score' : 4, 'mvp' : False}}
+# =======================================================================================================================================
+# Read all known players from known_players.csv
+
+df = pd.read_csv('players.csv')
+all_known_players = {
+    row['name']: {
+        'gender': row['gender'],
+        'score': row['score'],
+        'mvp': row['mvp'] == True or str(row['mvp']).lower() == 'true'
+    }
+    for _, row in df.iterrows()
+}
+
+# Syntax for all_known_players:
+# all_known_players = {'Joao' : {'gender' : 'M', 'score' : 7.5, 'mvp' : False},
+#                     'Maria' : {'gender' : 'F', 'score' : 9.5, 'mvp' : True}}
 
 # =======================================================================================================================================
 # Setup streamlit (needs to be the first command)
