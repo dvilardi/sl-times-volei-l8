@@ -326,8 +326,11 @@ st.markdown('#### Gerar Times')
 button_generate = st.button('Gerar Times', key = 'button_generate')
 hide_player_scores = st.checkbox('Esconder Scores', key = 'hide_scores', value = True)
 
+# Check that best_generation is not on session_state, initialize if not
+if 'best_generation' not in st.session_state:
+    st.session_state['best_generation'] = {}
+
 # If button is pressed, run the generation function
-best_generation = {}
 if button_generate == True:
     
     min_sd = 1000000
@@ -339,6 +342,9 @@ if button_generate == True:
         if generation['score_sd'] < min_sd and generation['female_amplitude'] <= 1 and generation['mvp_amplitude'] <= 1:
             best_generation = generation.copy()
             min_sd = generation['score_sd']
+    
+    # Save the best generation to session state
+    st.session_state['best_generation'] = best_generation
 
 # If the best_generation is found, display the teams
 if best_generation:
