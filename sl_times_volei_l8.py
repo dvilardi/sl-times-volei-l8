@@ -9,16 +9,27 @@ import os
 import random
 
 # =======================================================================================================================================
-# Load and allow the user to edit known_players.csv
+# Setup streamlit (needs to be the first command)
 
+st.set_page_config(layout = "wide")
+st.title('Times L8 🏐')
+st.set_page_config(page_title='Times L8 🏐')
+
+# =======================================================================================================================================
 # Load raw CSV only once per session
+
 if 'df_players' not in st.session_state:
     script_dir = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(script_dir, 'known_players.csv')
     df_players = pd.read_csv(csv_path)
     st.session_state['df_players'] = df_players
 
-# Allow user to edit/add rows
+# =======================================================================================================================================
+# Allow user to edit/add players
+
+st.markdown('---')
+st.markdown('#### Editar Jogadores')
+
 with st.expander('Adicionar/Editar jogadores', expanded = False):
     df_edited = st.data_editor(st.session_state['df_players'],num_rows='dynamic',key='editable_table')
 
@@ -27,10 +38,12 @@ with st.expander('Adicionar/Editar jogadores', expanded = False):
         st.session_state['df_players'] = df_edited.copy()
         st.success('Alterações salvas na memória temporária')
 
-# Pass df_players to a dictionary
+# =======================================================================================================================================
+# Convert DataFrame to dictionary for known players
+
 df_players = st.session_state['df_players']
 
-all_known_players = {
+players = {
     row['name']: {
         'gender': row['gender'],
         'score': row['score'],
@@ -44,56 +57,27 @@ all_known_players = {
 #                     'Maria' : {'gender' : 'F', 'score' : 9.5, 'mvp' : True}}
 
 # =======================================================================================================================================
-# Setup streamlit (needs to be the first command)
-
-st.set_page_config(layout = "wide")
-st.title('Times L8 🏐')
-
-# =======================================================================================================================================
 # Present players
 
 st.markdown('---')
-st.markdown('#### Configurar')
+st.markdown('#### Lista de Presença')
 
 # Known players: checkbox
-all_known_names = sorted(all_known_players.keys()) # alphabetically sorted
-present_known_players = []
-with st.expander('Dos conhecidos, quem veio hoje?', expanded = False):
-    for name in all_known_names:
-        if st.checkbox(name, key = f'checkbox_{name}') == True:
-            present_known_players.append(name)
-
-# New players (up to 12)
-present_new_players = []
-
-with st.expander('Algum jogador novo? (max = 12)', expanded = False):
-    for i in range(12):
-
-        with st.expander(f'Jogador extra #{i+1}', expanded = False):
-            name = st.text_input(label = '', key = f'extra_name_{i}', label_visibility = 'collapsed')
-            gender = st.radio(label = '',options=['M', 'F'],horizontal=True,key=f'gender_{i}', label_visibility='collapsed')
-            score = st.number_input(label = '',min_value=0.0,max_value=10.0,step=0.5,key=f'score_{i}', label_visibility='collapsed')
-            mvp = st.checkbox(label = 'MVP',value=False,key=f'mvp_{i}')
-            if name and gender and score:
-                present_new_players.append({'name':name,'gender':gender,'score':score,'mvp':mvp})
-
-# Merge both known and new players
+all_names = sorted(players.keys()) # alphabetically sorted
 present_players = {}
+with st.expander('Dos conhecidos, quem veio hoje?', expanded = False):
+    for name in all_names:
+        if st.checkbox(name, key = f'checkbox_{name}') == True:
+            present_players[name] = {'gender':players[name]['gender'],'score':players[name]['score'], 'mvp':players[name]['mvp']}
 
-for p in present_known_players:
-    present_players[p] = {'gender':all_known_players[p]['gender'],'score':all_known_players[p]['score'], 'mvp':all_known_players[p]['mvp']}
-
-for p in present_new_players:
-    present_players[p['name']] = {'gender':p['gender'],'score':p['score'],'mvp' : p['mvp']}
-
-# Warn repeated names
-np_names = [p['name'] for p in present_new_players]
-for np in np_names:
-    n = 0
-    for kp in present_known_players:
-        if np == kp:
-            st.warning(f'⚠️ Alerta: jogador repetido ({np})')
-            break
+# # Warn repeated names
+# np_names = [p['name'] for p in present_new_players]
+# for np in np_names:
+#     n = 0
+#     for kp in present_known_players:
+#         if np == kp:
+#             st.warning(f'⚠️ Alerta: jogador repetido ({np})')
+#             break
 
 # Print number of present players
 n_players = len(present_players)
@@ -368,5 +352,3 @@ if best_generation:
                 #if player_mvp == True: player_string = f'{player_string} ⭐️'
                 if player_setter == True: player_string = f'{player_string} 🙌'
                 st.markdown(f"<p style='margin-bottom: 0.1rem;'>{player_string}</p>",unsafe_allow_html=True)
-
-
