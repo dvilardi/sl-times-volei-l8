@@ -4,13 +4,16 @@
 import streamlit as st
 import pandas as pd
 import math
+import os
 # import plotly.graph_objects as go
 import random
 
 # =======================================================================================================================================
 # Read all known players from known_players.csv
 
-df = pd.read_csv('known_players.csv')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(script_dir, 'known_players.csv')
+df = pd.read_csv(csv_path)
 all_known_players = {
     row['name']: {
         'gender': row['gender'],
