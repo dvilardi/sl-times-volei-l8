@@ -14,24 +14,37 @@ import random
 st.set_page_config(layout = "wide")
 st.title('Times L8 🏐')
 st.set_page_config(page_title='Times L8 🏐')
+st.markdown('---')
 
 # =======================================================================================================================================
 # Load raw CSV only once per session
 
 if 'df_players' not in st.session_state:
+
+    # Read raw CSV file with known players
     script_dir = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(script_dir, 'known_players.csv')
     df_players = pd.read_csv(csv_path)
+
+    # Add a "presence column"
+    df_players['Presente'] = False
+
+    # Reorder columns
+    df_players = df_players[['Presente','Nome', 'Gen', 'Nota', 'MVP']]
+    
+    # Save to session_state
     st.session_state['df_players'] = df_players
 
 # =======================================================================================================================================
-# Allow user to edit/add players
+# Add/Edit/Present players
 
-st.markdown('---')
-st.markdown('#### Editar Jogadores')
-
-with st.expander('Adicionar/Editar jogadores', expanded = False):
-    df_edited = st.data_editor(st.session_state['df_players'],num_rows='dynamic',key='editable_table')
+with st.expander('Lista de Presença', expanded = False):
+    df_edited = st.data_editor(st.session_state['df_players'],
+                               num_rows='dynamic',
+                               key='editable_table',
+                               use_container_width=True,
+                               disabled=False,
+                               hide_index=True)
 
     # Button to save changed to session_state
     if st.button('Salvar alterações'):
@@ -44,10 +57,11 @@ with st.expander('Adicionar/Editar jogadores', expanded = False):
 df_players = st.session_state['df_players']
 
 players = {
-    row['name']: {
-        'gender': row['gender'],
-        'score': row['score'],
-        'mvp': row['mvp'] == True or str(row['mvp']).lower() == 'true'
+    row['Nome']: {
+        'gender': row['Gen'],
+        'score': row['Nota'],
+        'mvp': row['MVP'] == True,
+        'present': row['Presente']
     }
     for _, row in df_players.iterrows()
 }
@@ -57,36 +71,26 @@ players = {
 #                     'Maria' : {'gender' : 'F', 'score' : 9.5, 'mvp' : True}}
 
 # =======================================================================================================================================
-# Present players
+# Filter Present players
 
-st.markdown('---')
-st.markdown('#### Lista de Presença')
-
-# Known players: checkbox
-all_names = sorted(players.keys()) # alphabetically sorted
 present_players = {}
-with st.expander('Dos conhecidos, quem veio hoje?', expanded = False):
-    for name in all_names:
-        if st.checkbox(name, key = f'checkbox_{name}') == True:
-            present_players[name] = {'gender':players[name]['gender'],'score':players[name]['score'], 'mvp':players[name]['mvp']}
 
-# # Warn repeated names
-# np_names = [p['name'] for p in present_new_players]
-# for np in np_names:
-#     n = 0
-#     for kp in present_known_players:
-#         if np == kp:
-#             st.warning(f'⚠️ Alerta: jogador repetido ({np})')
-#             break
+for name, info in players.items():
+    if info['present'] == True:
+        present_players[name] = {
+            'gender': info['gender'],
+            'score': info['score'],
+            'mvp': info['mvp']
+        }
 
 # Print number of present players
 n_players = len(present_players)
 n_male = sum(1 for p in present_players.values() if p['gender'] == 'M')
 n_female = sum(1 for p in present_players.values() if p['gender'] == 'F')
 
-st.markdown(f"<div style='text-align: center; font-weight: bold;'>Total de jogadores: {n_players} ({n_male}M + {n_female}F)</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='text-align: left; font-weight: bold;'>Total de jogadores: {n_players} ({n_male}M + {n_female}F)<br><br></div>", unsafe_allow_html=True)
 
-if n_players > 30:
+if n_players > 36:
     st.error(f'🚨 Mais de 36 jogadores presentes ({n_players})')
 
 # =======================================================================================================================================
@@ -107,13 +111,13 @@ for i in range(len(team_sizes)):
     filled = filled + fill_with
     team_sizes[i] = fill_with
 
-with st.expander('Definir # de jogadores por time', expanded = False):
-    n_team_1 = st.number_input(label = 'Time 1', min_value = 0, max_value = 6, step = 1, value = team_sizes[0], key = 'n_team_1')
-    n_team_2 = st.number_input(label = 'Time 2', min_value = 0, max_value = 6, step = 1, value = team_sizes[1], key = 'n_team_2')
-    n_team_3 = st.number_input(label = 'Time 3', min_value = 0, max_value = 6, step = 1, value = team_sizes[2], key = 'n_team_3')
-    n_team_4 = st.number_input(label = 'Time 4', min_value = 0, max_value = 6, step = 1, value = team_sizes[3], key = 'n_team_4')
-    n_team_5 = st.number_input(label = 'Time 5', min_value = 0, max_value = 6, step = 1, value = team_sizes[4], key = 'n_team_5')
-    n_team_6 = st.number_input(label = 'Time 6', min_value = 0, max_value = 6, step = 1, value = team_sizes[5], key = 'n_team_6')
+with st.expander('Tamanhos dos times', expanded = False):
+    n_team_1 = st.number_input(label = 'Time A', min_value = 0, max_value = 6, step = 1, value = team_sizes[0], key = 'n_team_1')
+    n_team_2 = st.number_input(label = 'Time B', min_value = 0, max_value = 6, step = 1, value = team_sizes[1], key = 'n_team_2')
+    n_team_3 = st.number_input(label = 'Time C', min_value = 0, max_value = 6, step = 1, value = team_sizes[2], key = 'n_team_3')
+    n_team_4 = st.number_input(label = 'Time D', min_value = 0, max_value = 6, step = 1, value = team_sizes[3], key = 'n_team_4')
+    n_team_5 = st.number_input(label = 'Time E', min_value = 0, max_value = 6, step = 1, value = team_sizes[4], key = 'n_team_5')
+    n_team_6 = st.number_input(label = 'Time F', min_value = 0, max_value = 6, step = 1, value = team_sizes[5], key = 'n_team_6')
 
     if n_team_1 + n_team_2 + n_team_3 + n_team_4 + n_team_5 != n_players:
         st.error(f'🚨 Jogadores por time ({n_team_1 + n_team_2 + n_team_3 + n_team_4 + n_team_5}) diferente do numero de jogadores ({n_players})')
@@ -128,7 +132,7 @@ if n_team_3 > 0: n_teams = n_teams + 1
 if n_team_4 > 0: n_teams = n_teams + 1
 if n_team_5 > 0: n_teams = n_teams + 1
 
-st.markdown(f"<div style='text-align: center; font-weight: bold;'>Total de times: {n_teams}</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='text-align: left; font-weight: bold;'>Total de times: {n_teams}<br><br></div>", unsafe_allow_html=True)
 
 # =======================================================================================================================================
 # Levantadores
