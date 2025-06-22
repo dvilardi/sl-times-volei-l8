@@ -9,18 +9,35 @@ import os
 import random
 
 # =======================================================================================================================================
-# Read all known players from known_players.csv
+# Load and allow the user to edit known_players.csv
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-csv_path = os.path.join(script_dir, 'known_players.csv')
-df = pd.read_csv(csv_path)
+# Load raw CSV only once per session
+if 'df_players' not in st.session_state:
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_path = os.path.join(script_dir, 'known_players.csv')
+    df_players = pd.read_csv(csv_path)
+    st.session_state['df_players'] = df_players
+
+# Allow user to edit/add rows
+df_edited = st.data_editor(st.session_state['players_df'],
+                           num_rows='dynamic',
+                           key='editable_table')
+
+# Button to save changed to session_state
+if st.button('Salvar alterações'):
+    st.session_state['df_players'] = df_edited.copy()
+    st.success('Alterações salvas na memória temporária')
+
+# Pass df_players to a dictionary
+df_players = st.session_state['df_players']
+
 all_known_players = {
     row['name']: {
         'gender': row['gender'],
         'score': row['score'],
         'mvp': row['mvp'] == True or str(row['mvp']).lower() == 'true'
     }
-    for _, row in df.iterrows()
+    for _, row in df_players.iterrows()
 }
 
 # Syntax for all_known_players:
