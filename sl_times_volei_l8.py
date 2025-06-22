@@ -328,6 +328,7 @@ hide_player_scores = st.checkbox('Esconder Scores', key = 'hide_scores', value =
 
 # Check that best_generation is not on session_state, initialize if not
 if 'best_generation' not in st.session_state:
+    best_generation = {}
     st.session_state['best_generation'] = {}
 
 # If button is pressed, run the generation function
