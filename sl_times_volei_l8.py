@@ -30,7 +30,7 @@ if 'df_players' not in st.session_state:
     df_players['Presente'] = False
 
     # Sort by name
-    df_players = df_players.sort_values(by='Nome')
+    df_players = df_players.sort_values(by='Nome').reset_index(drop=True)
  
     # Reorder columns
     df_players = df_players[['Presente','Nome','Genero','Score']]
@@ -46,7 +46,6 @@ with st.expander('Lista de Presença', expanded = False):
                                num_rows='dynamic',
                                key='editable_table',
                                use_container_width=True,
-                               disabled=False,
                                hide_index=True)
 
     # Button to save changed to session_state
@@ -330,18 +329,33 @@ if best_generation:
     # Display result
     letters = ['A','B','C','D','E','F'] # max 6
 
+    n_teams = len(best_generation['teams'])
+    col_list = st.columns(n_teams*[1])
+
     for t,team in enumerate(best_generation['teams']):
         team_score = best_generation['teams'][t]['score_avg']
         team_size = best_generation['teams'][t]['size']
-        with st.expander(f'Time {letters[t]} (Score: {team_score:.1f}) (Fixos: {team_size})', expanded = True):
+        with col_list[t]:
+            html = f"""
+            <div style="
+                border: 2px solid #ccc;
+                border-radius: 10px;
+                padding: 10px;
+                margin-bottom: 10px;
+                background-color: #1e1e1e;
+                color: white;
+            ">
+                <h4 style="margin-top: 0; color: white;">Time {letters[t]}</h4>
+            """
+
             for p in team['players']:
-                player_score = present_players[p]['score']
-                player_mvp = present_players[p]['mvp']
-                if hide_player_scores == True:
-                    player_string = f'{p}'
-                else:
-                    player_string = f'{p} ({player_score:.1f})'
-                player_setter = p in setters
-                #if player_mvp == True: player_string = f'{player_string} ⭐️'
-                if player_setter == True: player_string = f'{player_string} 🙌'
-                st.markdown(f"<p style='margin-bottom: 0.1rem;'>{player_string}</p>",unsafe_allow_html=True)
+                score = present_players[p]['score']
+                player_string = f'🙌 {p}' if (p in setters) else f'{p}'
+                if hide_player_scores == False: player_string = f'{player_string} ({score:.1f})'
+                html += f"<p style='margin: 0px 0; color: white;'>{player_string}</p>"
+
+            html += f"<p style='margin: 0px; color: #1f77b4;'><b>Score:</b> {team_score:.1f}</p>"
+            html += f"<p style='margin: 0px; color: #1f77b4;'><b>Fixos:</b> {team_size}</p>"
+            html += "</div>"
+
+            st.markdown(html, unsafe_allow_html=True)
