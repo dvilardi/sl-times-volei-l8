@@ -1,30 +1,4 @@
 # =======================================================================================================================================
-# Installing streamlit and running the dash locally
-
-# To install streamlit (if you don't have the package yet), run "pip3 install streamlit" on your terminal
-# To run the dash, open terminal and:
-#   cd ~/Drive/"Python Projects"/project_volleyball_teams
-#   streamlit run streamlit_volleyball_teams.py
-# To run the dash in a local network (all devices in the same wifi can use), open terminal and:
-#   cd ~/Drive/"Python Projects"/project_volleyball_teams
-#   streamlit run streamlit_volleyball_teams.py --server.address 0.0.0.0
-
-
-# =======================================================================================================================================
-# Basic dash for testing
-
-# import streamlit as st
-
-# st.title('Hello Streamlit')
-
-# name = st.text_input('What is your name?')
-
-# if name:
-#     st.write(f'Nice to meet you, {name}')
-
-# st.write('Try changing the name above and see the output update')
-
-# =======================================================================================================================================
 # Packages
 
 import streamlit as st
@@ -348,18 +322,25 @@ def generate_teams(present_players, setters, team_sizes):
 st.markdown('---')
 st.markdown('#### Gerar Times')
 
-min_sd = 1000000
-best_generation = {}
+# Button to generate teams and checkbox to hide scores
+button_generate = st.button('Gerar Times', key = 'button_generate')
+hide_player_scores = st.checkbox('Esconde Scores', key = 'hide_scores', value = True)
 
-if st.button('Gerar Times') == True:
+# If button is pressed, run the generation function
+if button_generate == True:
     
+    min_sd = 1000000
+    best_generation = {}
+
     # Run code 100x to find a low standard deviation
     for _ in range(100):
         generation = generate_teams(present_players, setters, team_sizes)
         if generation['score_sd'] < min_sd and generation['female_amplitude'] <= 1 and generation['mvp_amplitude'] <= 1:
             best_generation = generation.copy()
             min_sd = generation['score_sd']
-    
+
+# If the best_generation is found, display the teams
+if best_generation:
     # Display result
     letters = ['A','B','C','D','E','F'] # max 6
 
@@ -370,11 +351,13 @@ if st.button('Gerar Times') == True:
             for p in team['players']:
                 player_score = present_players[p]['score']
                 player_mvp = present_players[p]['mvp']
-                player_string = f'{p} ({player_score:.1f})'
+                if hide_player_scores == True:
+                    player_string = f'{p}'
+                else:
+                    player_string = f'{p} ({player_score:.1f})'
                 player_setter = p in setters
-                if player_mvp == True: player_string = f'{player_string} ⭐️'
+                #if player_mvp == True: player_string = f'{player_string} ⭐️'
                 if player_setter == True: player_string = f'{player_string} 🙌'
-
                 st.markdown(f"<p style='margin-bottom: 0.1rem;'>{player_string}</p>",unsafe_allow_html=True)
 
 
