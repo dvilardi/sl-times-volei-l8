@@ -19,14 +19,13 @@ if 'df_players' not in st.session_state:
     st.session_state['df_players'] = df_players
 
 # Allow user to edit/add rows
-df_edited = st.data_editor(st.session_state['df_players'],
-                           num_rows='dynamic',
-                           key='editable_table')
+with st.expander('Adicionar/Editar jogadores', expanded = False):
+    df_edited = st.data_editor(st.session_state['df_players'],num_rows='dynamic',key='editable_table')
 
-# Button to save changed to session_state
-if st.button('Salvar alterações'):
-    st.session_state['df_players'] = df_edited.copy()
-    st.success('Alterações salvas na memória temporária')
+    # Button to save changed to session_state
+    if st.button('Salvar alterações'):
+        st.session_state['df_players'] = df_edited.copy()
+        st.success('Alterações salvas na memória temporária')
 
 # Pass df_players to a dictionary
 df_players = st.session_state['df_players']
