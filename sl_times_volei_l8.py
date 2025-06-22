@@ -324,9 +324,10 @@ st.markdown('#### Gerar Times')
 
 # Button to generate teams and checkbox to hide scores
 button_generate = st.button('Gerar Times', key = 'button_generate')
-hide_player_scores = st.checkbox('Esconde Scores', key = 'hide_scores', value = True)
+hide_player_scores = st.checkbox('Esconder Scores', key = 'hide_scores', value = True)
 
 # If button is pressed, run the generation function
+best_generation = {}
 if button_generate == True:
     
     min_sd = 1000000
