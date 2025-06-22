@@ -10,7 +10,7 @@ import random
 # =======================================================================================================================================
 # Read all known players from known_players.csv
 
-df = pd.read_csv('players.csv')
+df = pd.read_csv('known_players.csv')
 all_known_players = {
     row['name']: {
         'gender': row['gender'],
