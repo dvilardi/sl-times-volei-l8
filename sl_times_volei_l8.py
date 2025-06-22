@@ -33,7 +33,7 @@ if 'df_players' not in st.session_state:
     df_players = df_players.sort_values(by='Nome').reset_index(drop=True)
  
     # Reorder columns
-    df_players = df_players[['Presente','Nome','Genero','Score']]
+    df_players = df_players[['Presente','Nome','S','Score']]
     
     # Save to session_state
     st.session_state['df_players'] = df_players
@@ -64,7 +64,7 @@ df_players = st.session_state['df_players']
 df_present = df_players[df_players['Presente'] == True]
 
 present_players = {row['Nome']:
-                   {'gender': row['Genero'],
+                   {'gender': row['S'],
                     'score': row['Score'],
                     'mvp': row['Score'] >= 9.0,  # Assuming MVPs are players with score >= 9.0
                     } for _, row in df_present.iterrows()}
