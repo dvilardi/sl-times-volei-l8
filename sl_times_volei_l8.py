@@ -29,8 +29,11 @@ if 'df_players' not in st.session_state:
     # Add a "presence column"
     df_players['Presente'] = False
 
+    # Sort by name
+    df_players = df_players.sort_values(by='Nome')
+ 
     # Reorder columns
-    df_players = df_players[['Presente','Nome', 'Gen', 'Nota', 'MVP']]
+    df_players = df_players[['Presente','Nome','Genero','Score']]
     
     # Save to session_state
     st.session_state['df_players'] = df_players
@@ -52,37 +55,23 @@ with st.expander('Lista de Presença', expanded = False):
         st.success('Alterações salvas na memória temporária')
 
 # =======================================================================================================================================
-# Convert DataFrame to dictionary for known players
+# Get dataframe from session_state (either raw on edited by user)
 
 df_players = st.session_state['df_players']
 
-players = {
-    row['Nome']: {
-        'gender': row['Gen'],
-        'score': row['Nota'],
-        'mvp': row['MVP'] == True,
-        'present': row['Presente']
-    }
-    for _, row in df_players.iterrows()
-}
+# =======================================================================================================================================
+# Create dictionary of present players
 
-# Syntax for all_known_players:
-# all_known_players = {'Joao' : {'gender' : 'M', 'score' : 7.5, 'mvp' : False},
-#                     'Maria' : {'gender' : 'F', 'score' : 9.5, 'mvp' : True}}
+df_present = df_players[df_players['Presente'] == True]
+
+present_players = {row['Nome']:
+                   {'gender': row['Genero'],
+                    'score': row['Score'],
+                    'mvp': row['Score'] >= 9.0,  # Assuming MVPs are players with score >= 9.0
+                    } for _, row in df_present.iterrows()}
+
 
 # =======================================================================================================================================
-# Filter Present players
-
-present_players = {}
-
-for name, info in players.items():
-    if info['present'] == True:
-        present_players[name] = {
-            'gender': info['gender'],
-            'score': info['score'],
-            'mvp': info['mvp']
-        }
-
 # Print number of present players
 n_players = len(present_players)
 n_male = sum(1 for p in present_players.values() if p['gender'] == 'M')
@@ -94,7 +83,7 @@ if n_players > 36:
     st.error(f'🚨 Mais de 36 jogadores presentes ({n_players})')
 
 # =======================================================================================================================================
-# Jogadores por time
+# Tamanhos dos times
 
 team_sizes = [0,0,0,0,0,0]
 n_teams_recommended = math.ceil(n_players / 6)
@@ -135,7 +124,7 @@ if n_team_5 > 0: n_teams = n_teams + 1
 st.markdown(f"<div style='text-align: left; font-weight: bold;'>Total de times: {n_teams}<br><br></div>", unsafe_allow_html=True)
 
 # =======================================================================================================================================
-# Levantadores
+# Definir Levantadores
 
 setters = []
 

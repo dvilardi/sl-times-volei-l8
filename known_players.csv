@@ -1,37 +1,37 @@
-Nome,Gen,Nota,MVP
-Ricardo B,M,10.0,True
-Fabio,M,10.0,True
-Tonico,M,10.0,True
-Christian,M,10.0,True
-Brilhante,M,9.0,True
-Marcao,M,9.0,True
-Ricardo P,M,8.5,False
-Felipe L,M,8.5,False
-Adriano,M,8.5,False
-Pedro,M,8.5,False
-Leo,M,8.5,False
-Vitor,M,8.5,False
-Carol,F,8.0,False
-Marcelo,M,7.5,False
-Hideki,M,7.5,False
-Marreta,M,7.0,False
-Taynara,F,7.0,False
-Otacilio,M,7.0,False
-Samira,F,7.0,False
-Gabriel,M,7.0,False
-Rhenan,M,7.0,False
-Jorge,M,6.5,False
-Danilo,M,6.5,False
-Edson,M,6.5,False
-Will,M,6.5,False
-Marquinhos,M,6.5,False
-Valdney,M,6.0,False
-Matheus,M,6.0,False
-Silvana,F,6.0,False
-Mel,F,5.0,False
-Chico,M,5.0,False
-Mary,F,5.0,False
-Rodrigo,M,5.0,False
-Jessica,F,5.0,False
-Dri,F,4.0,False
-Cris N,F,4.0,False
+Nome,Genero,Score
+Ricardo B,M,10.0
+Fabio,M,10.0
+Tonico,M,10.0
+Christian,M,10.0
+Brilhante,M,9.0
+Marcao,M,9.0
+Ricardo P,M,8.5
+Felipe L,M,8.5
+Adriano,M,8.5
+Pedro,M,8.5
+Leo,M,8.5
+Vitor,M,8.5
+Carol,F,8.0
+Marcelo,M,7.5
+Hideki,M,7.5
+Marreta,M,7.0
+Taynara,F,7.0
+Otacilio,M,7.0
+Samira,F,7.0
+Gabriel,M,7.0
+Rhenan,M,7.0
+Jorge,M,6.5
+Danilo,M,6.5
+Edson,M,6.5
+Will,M,6.5
+Marquinhos,M,6.5
+Valdney,M,6.0
+Matheus,M,6.0
+Silvana,F,6.0
+Mel,F,5.0
+Chico,M,5.0
+Mary,F,5.0
+Rodrigo,M,5.0
+Jessica,F,5.0
+Dri,F,4.0
+Cris N,F,4.0
