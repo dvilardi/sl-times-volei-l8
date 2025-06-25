@@ -340,7 +340,7 @@ if best_generation:
     for t,team in enumerate(best_generation['teams']):
         team_score = best_generation['teams'][t]['score_avg']
         team_size = best_generation['teams'][t]['size']
-        team_sd = best_generation['teams']['score_sd']
+        team_sd = best_generation['teams'][t]['score_sd']
         with col_list[t]:
             html = f"""
             <div style="
