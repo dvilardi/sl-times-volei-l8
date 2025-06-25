@@ -228,11 +228,14 @@ def generate_teams(present_players, setters, team_sizes):
     # Calculate team stats
 
     teams_stats = []
-
+    setter_weight = 2 # weight for setters in the score calculation
+    
+    # Loop teams
     for t, team in enumerate(teams):
         
         # Initialize
         score_sum = 0
+        weights_sum = 0
         size = team_sizes[t]
         males = 0
         females = 0
@@ -240,7 +243,14 @@ def generate_teams(present_players, setters, team_sizes):
 
         # Loop players
         for player in team:
-            score_sum = score_sum + present_players[player]['score']
+            # If player is a setter, multiply score by setter_weight
+            if player in setters:
+                score_sum = score_sum + present_players[player]['score'] * setter_weight
+                weights_sum = weights_sum + setter_weight
+            else:
+                score_sum = score_sum + present_players[player]['score']
+                weights_sum = weights_sum + 1
+
             if present_players[player]['gender'] == 'M':
                 males = males + 1
             else:
@@ -248,11 +258,10 @@ def generate_teams(present_players, setters, team_sizes):
             if present_players[player]['mvp'] == True: mvp_count = mvp_count + 1
         
         # Avg score
-        score_avg = score_sum / size
+        score_avg = score_sum / weights_sum
 
         # Team stats dictionary
         teams_stats.append({'players': team,
-                            'score_sum' : score_sum,
                             'size' : size,
                             'score_avg' : score_avg,
                             'males' : males,
