@@ -11,9 +11,8 @@ import random
 # =======================================================================================================================================
 # Setup streamlit (needs to be the first command)
 
-st.set_page_config(layout = "wide")
+st.set_page_config(layout = 'wide',page_title='Times L8 🏐')
 st.title('Times L8 🏐')
-st.set_page_config(page_title='Times L8 🏐')
 
 # =======================================================================================================================================
 # Load raw CSV only once per session
