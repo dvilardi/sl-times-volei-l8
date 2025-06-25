@@ -358,7 +358,7 @@ if best_generation:
                 if hide_player_scores == False: player_string = f'{player_string} ({score:.1f})'
                 html += f"<p style='margin: 0px 0; color: white;'>{player_string}</p>"
 
-            html += f"<p style='margin: 0px; color: #1f77b4;'><b>Score:</b> {team_score:.2f}</p>"
+            html += f"<p style='margin: 0px; color: #1f77b4;'><b>Score:</b> {team_score:.1f}</p>"
             html += f"<p style='margin: 0px; color: #1f77b4;'><b>Fixos:</b> {team_size}</p>"
             html += "</div>"
 
