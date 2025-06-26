@@ -375,7 +375,7 @@ def show_best_result():
                 player_string = f'🙌 {p}' if (p in setter_names) else f'{p}'
                 html += f"<p style='margin: 0px; color: white;'>{player_string}</p>"
 
-            html += f"<p style='margin: 0px; color: #1f77b4;'><b>Score:</b> {team_score:.1f} (<b>σ</b> {team_sd:.1f})</p>"
+            html += f"<p style='margin: 0px; color: #1f77b4;'><b>Score:</b> {team_score:.1f} ± {team_sd:.1f}</p>"
             html += f"<p style='margin: 0px; color: #1f77b4;'><b>Fixos:</b> {team_size}</p>"
             html += "</div>"
 
