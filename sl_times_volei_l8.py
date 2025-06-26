@@ -316,7 +316,8 @@ def optimize_teams():
             cost = (score_weight * score_sd_norm + sd_weight * sd_sd_norm) / (score_weight + sd_weight)
             
             # If this is the best result so far, update the best_result and lowest_cost
-            if cost < lowest_cost:
+            # Only update if female amplitude and mvp amplitude are lower than or equal to 1 (fair teams)
+            if cost < lowest_cost and output['female_amplitude'] <= 1 and output['mvp_amplitude'] <= 1:
                 lowest_cost = cost
                 best_result = output
 
