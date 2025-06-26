@@ -608,7 +608,10 @@ elif st.session_state['page'] == 'page_presenca':
         # If the checkbox is unchecked, remove the player from the present list
         elif player_checkbox == False and player_name in present_names:
             present_names.remove(player_name)
-            
+    
+    # Sort the present names alphabetically
+    present_names = sorted(present_names)
+
     # Update the session state with the present names
     st.session_state['present_names'] = present_names
 
@@ -727,7 +730,10 @@ elif st.session_state['page'] == 'page_levantadores':
         # If the checkbox is unchecked, remove the player from the setters list
         elif player_checkbox == False and player_name in setter_names:
             setter_names.remove(player_name)
-            
+    
+    # Sort the setter names alphabetically
+    setter_names = sorted(setter_names)
+
     # Update the session state with the setter names
     st.session_state['setter_names'] = setter_names
 
