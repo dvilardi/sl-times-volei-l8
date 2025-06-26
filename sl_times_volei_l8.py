@@ -373,7 +373,7 @@ def show_best_result():
             for p in team['players']:
                 score = players_dictionary[p]['score']
                 player_string = f'🙌 {p}' if (p in setter_names) else f'{p}'
-                html += f"<p style='margin: 0px 0; color: white;'>{player_string}</p>"
+                html += f"<p style='margin: 0px; color: white;'>{player_string}</p>"
 
             html += f"<p style='margin: 0px; color: #1f77b4;'><b>Score:</b> {team_score:.1f}</p>"
             html += f"<p style='margin: 0px; color: #1f77b4;'><b>σ:</b> {team_sd:.1f}</p>"
@@ -664,7 +664,7 @@ elif st.session_state['page'] == 'page_tamanho_times':
             team_sizes[i] = fill_with
         
         # Save the recommended team sizes to session state (because the user might not click on save and we need a consistent state)
-        st.success('✅ Tamanhos dos times salvos com sucesso.')
+        st.session_state['team_sizes'] = team_sizes
         
 
     # Create number inputs for each team size
