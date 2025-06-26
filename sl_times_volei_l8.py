@@ -393,7 +393,7 @@ def show_best_result():
 if st.session_state['page'] == 'page_home':
 
     # Title
-    st.title('🏐 (V2) Times L8')
+    st.title('🏐 Times L8')
 
     # Button to edit/add players
     st.button('✏️ Editar Jogadores', on_click=go_to_page, args=('page_editar_jogadores',))
