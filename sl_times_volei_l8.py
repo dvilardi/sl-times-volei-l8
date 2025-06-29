@@ -38,10 +38,11 @@ if 'players_dictionary' not in st.session_state:
     script_dir = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(script_dir, 'known_players.csv')
     df_players = pd.read_csv(csv_path)
-    df_players = df_players.sort_values(by='Nome').reset_index(drop=True)
-    players_dictionary = {row['Nome']:
-                   {'gender': row['S'],
+    df_players = df_players.sort_values(by='Name').reset_index(drop=True)
+    players_dictionary = {row['Name']:
+                   {'gender': row['Gender'],
                     'score': row['Score'],
+                    'setter_score': row['Setter Score'],
                     } for _, row in df_players.iterrows()}
     st.session_state['players_dictionary'] = players_dictionary
 
@@ -199,7 +200,7 @@ def random_teams():
         for player in team:
             # If player is a setter, multiply score by setter_weight
             if player in setter_names:
-                team_score_sum = team_score_sum + players_dictionary[player]['score'] * setter_weight
+                team_score_sum = team_score_sum + players_dictionary[player]['setter_score'] * setter_weight
                 team_weights_sum = team_weights_sum + setter_weight
             else:
                 team_score_sum = team_score_sum + players_dictionary[player]['score']
@@ -220,7 +221,7 @@ def random_teams():
         team_score_variance = 0
         for player in team:
             if player in setter_names:
-                team_score_variance = team_score_variance + setter_weight * (players_dictionary[player]['score'] - team_score_avg) ** 2
+                team_score_variance = team_score_variance + setter_weight * (players_dictionary[player]['setter_score'] - team_score_avg) ** 2
             else:
                 team_score_variance = team_score_variance + 1 * (players_dictionary[player]['score'] - team_score_avg) ** 2
         team_score_variance = team_score_variance / team_weights_sum
@@ -326,7 +327,6 @@ def optimize_teams():
     st.write(f"Execution time: {end_time - start_time:.2f} seconds")
     st.write(f"Avg Score: {best_result['score_avg']:.2f} (σ: {best_result['score_sd']:.2f})")
     st.write(f"Avg SD: {best_result['sd_avg']:.2f} (σ: {best_result['sd_sd']:.2f})")
-
 
     # Return the best result
     return best_result
@@ -463,8 +463,9 @@ elif st.session_state['page'] == 'page_editar_jogadores':
     st.button('👤 Novo Jogador', on_click=go_to_page, args=('page_novo_jogador',))
     for player_name in players_dictionary.keys():
         player_score = players_dictionary[player_name]['score']
+        player_setter_score = players_dictionary[player_name]['setter_score']
         player_gender = players_dictionary[player_name]['gender']
-        player_string = f'✏️ {player_name} ({player_gender}, {player_score:.1f})'
+        player_string = f'✏️ {player_name} ({player_gender}, Score: {player_score:.1f}, Levant: {player_setter_score:.1f})'
         st.button(player_string, on_click=edit_player, args=(player_name,))
 
 # ---------------------------------------------------------------------------------------------------------------------------------------
@@ -480,6 +481,7 @@ elif st.session_state['page'] == 'page_novo_jogador':
     # Inputs
     new_player_name = st.text_input('Nome', placeholder='Nome')
     new_player_score = st.number_input('Score', min_value=0.1, max_value=10.0, step=0.5, format="%.1f", value=5.0)
+    new_player_setter_score = st.number_input('Levantamento', min_value=0.1, max_value=10.0, step=0.5, format="%.1f", value=5.0)
     new_player_gender = st.radio('Sexo', options=['M', 'F'], index=0)
 
     # Add new player to the dictionary
@@ -496,10 +498,9 @@ elif st.session_state['page'] == 'page_novo_jogador':
                 st.error(f'🚨 Erro: {new_player_name} já existe.')
             else:
                 # Add the new player to the dictionary
-                players_dictionary[new_player_name] = {'gender' : new_player_gender, 'score' : new_player_score}
-
-                # Sort the players dictionary by name
-                players_dictionary = dict(sorted(players_dictionary.items()))
+                players_dictionary[new_player_name] = {'gender' : new_player_gender,
+                                                       'score' : new_player_score,
+                                                       'setter_score' : new_player_setter_score}
 
                 # Update the session state with the new players dictionary
                 st.session_state['players_dictionary'] = players_dictionary
@@ -521,6 +522,7 @@ elif st.session_state['page'] == 'page_editar_jogador':
 
     # Current player data
     current_score = players_dictionary[player_being_edited]['score']
+    current_setter_score = players_dictionary[player_being_edited]['setter_score']
     current_gender = players_dictionary[player_being_edited]['gender']
     
     # Back button and title
@@ -530,18 +532,17 @@ elif st.session_state['page'] == 'page_editar_jogador':
         
     # Inputs (can't change the name of the player)
     changed_score = st.number_input('Score', min_value=0.1, max_value=10.0, step=0.5, format="%.1f", value=current_score)
+    changed_setter_score = st.number_input('Levantamento', min_value=0.1, max_value=10.0, step=0.5, format="%.1f", value=current_setter_score)
     changed_gender = st.radio('Sexo', options=['M', 'F'], index=['M', 'F'].index(current_gender))
 
     # Add new player to the dictionary
     if st.button('💾 Salvar Alterações'):
         
-        if current_score != changed_score or current_gender != changed_gender:
+        if current_score != changed_score or current_gender != changed_gender or current_setter_score != changed_setter_score:
             # Update the player data
             players_dictionary[player_being_edited]['score'] = changed_score
+            players_dictionary[player_being_edited]['setter_score'] = changed_setter_score
             players_dictionary[player_being_edited]['gender'] = changed_gender
-
-            # Sort the players dictionary by name
-            players_dictionary = dict(sorted(players_dictionary.items()))
 
             # Send the upated players dictionary to session state
             st.session_state['players_dictionary'] = players_dictionary
@@ -567,8 +568,7 @@ elif st.session_state['page'] == 'page_editar_jogador':
             # Show success response
             st.success(f'✅ Jogador {player_being_edited} removido com sucesso.')
 
-            go_to_page('page_editar_jogadores')
-    
+            go_to_page('page_editar_jogadores')    
         
         else:
             st.error(f'🚨 Erro: {player_being_edited} não encontrado para remoção.')
