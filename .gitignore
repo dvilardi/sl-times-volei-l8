@@ -1,0 +1,23 @@
+# Virtual env
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# macOS junk
+.DS_Store
+
+# Jupyter temp
+.ipynb_checkpoints/
+
+# Google Drive temp
+*.tmp
+
+# Secrets
+my_secret_config.json
+
+# Google sheets
+known_players_helper.gsheet
+volleyball_teams_methodology.gdoc
