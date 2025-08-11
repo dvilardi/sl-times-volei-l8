@@ -1,45 +1,54 @@
-Name,Gender,Score,Setter Score
-Fabio,M,10.0,10.0
-Tonico,M,10.0,9.0
-Ricardo B,M,10.0,9.0
-Zuniga,M,10.0,7.0
-Christian,M,9.5,9.0
-Ian Z,M,9.5,9.0
-Brilhante,M,9.0,6.0
-Samuel,M,9.0,7.0
-Leo,M,8.5,7.0
-Marcao,M,8.5,6.0
-Peixoto,M,8.5,7.0
-Felipe L,M,8.5,6.0
-Adriano,M,8.5,6.0
-Pedro,M,8.5,6.0
-Gabriel,M,8.5,6.0
-Livinho,M,8.5,6.0
-Hideki,M,8.0,7.0
-Marcelo,M,8.0,9.0
-Vitor,M,8.0,6.0
-Otacilio,M,8.0,6.0
-Marreta,M,8.0,6.0
-Carol,F,7.5,6.0
-Pedro H,M,7.5,6.0
-Isa,F,7.0,6.5
-Samira,F,7.0,6.0
-Renan,M,7.0,6.0
-Rhuan,M,7.0,6.0
-Taynara,F,7.0,6.0
-Jorge,M,7.0,6.0
+Fabio,M,10,10
+Tonico,M,10,9
+Ricardo B,M,10,9
+Zuniga,M,10,7
+Christian,M,9.5,9
+Ian Z,M,9.5,9
+Brilhante,M,9,6
+Samuel,M,9,7
+Daniel,M,9,7
+Leo,M,8.5,7
+Marcao,M,8.5,6
+Peixoto,M,8.5,7
+Felipe L,M,8.5,6
+Adriano,M,8.5,6
+Pedro,M,8.5,6
+Gabriel,M,8.5,6
+Livinho,M,8.5,6
+Hideki,M,8,7
+Marcelo,M,8,9
+Vitor,M,8,6
+Otacilio,M,8,6
+Marreta,M,8,6
+Carol,F,7.5,6
+Pedro H,M,7.5,6
+Isa,F,7,6.5
+Samira,F,7,6
+Renan,M,7,6
+Rhuan,M,7,6
+Taynara,F,7,6
+Jorge,M,7,6
 Kaua,M,6.5,6.5
 Danilo,M,6.5,6.5
-Edson,M,6.5,6.0
-Marquinhos,M,6.5,6.0
-Rodrigo,M,6.5,7.0
-Will,M,6.0,7.0
-Valdney,M,6.0,6.5
-Matheus,M,6.0,6.0
-Silvana,F,6.0,5.0
+Edson,M,6.5,6
+Marquinhos,M,6.5,6
+Rodrigo,M,6.5,7
+Will,M,6,7
+Valdney,M,6,6.5
+Matheus,M,6,6
+Silvana,F,6,5
 Jessica,F,5.5,5.5
-Mel,F,5.0,5.0
-Chico,M,5.0,5.0
-Mary,F,5.0,5.0
-Dri,F,4.0,4.0
-Cris N,F,3.0,3.0
+Thiago,M,5,5
+Gustavo,M,5,5
+Mel,F,5,5
+Chico,M,5,5
+Levy,M,5,5
+Mary,F,5,5
+Sofia,F,4,4
+Kiara,F,4,4
+Marina,F,4,4
+Sadlla,F,4,4
+Tauane,F,4,4
+Dri,F,4,4
+Japones,M,3,3
+Cris N,F,3,3
