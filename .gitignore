@@ -21,3 +21,4 @@ my_secret_config.json
 # Google sheets
 known_players_helper.gsheet
 volleyball_teams_methodology.gdoc
+score_pacing_system.ipynb
